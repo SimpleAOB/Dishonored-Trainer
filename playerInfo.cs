@@ -9,21 +9,23 @@ namespace Dishonored_Trainer
     class playerInfo
     {
         #region Health Address / Offsets
-        public class playerDataHealth
+        public class PlayerAddyOffsets
         {
-            public int Health;
+            public int health;
+            public int mana;
 
 
-            public playerDataHealth(int _health)
+            public PlayerAddyOffsets(int _health, int _mana = 0)
             {
-                Health = _health;
+                health = _health;
+                mana = _mana;
             }
         }
-        public struct PlayerDataHP
+        public struct PlayerData
         {
             public int baseAddress;
             public int[] multilevel;
-            public playerDataHealth offsets;
+            public PlayerAddyOffsets offsets;
         }
         #endregion
         //----------------------------

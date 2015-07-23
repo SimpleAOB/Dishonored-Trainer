@@ -18,7 +18,7 @@ namespace Dishonored_Trainer
         Process[] MyProcess;
         ProcessModule mainModule;
         ProcessMemoryReader Mem = new ProcessMemoryReader();
-        playerInfo.PlayerDataHP playerHP = new playerInfo.PlayerDataHP();
+        playerInfo.PlayerData playerHP = new playerInfo.PlayerData();
         playerInfo.PlayerDataM playerM = new playerInfo.PlayerDataM();
 
         bool GameFound = false;
@@ -58,16 +58,16 @@ namespace Dishonored_Trainer
                 GameFound = true;
                 //GameFound is true, set all game specific variables and stuff here
                 this.Height = 270;
-                hookGameButton.Text = "Game Hooked (Status: Connected to PID:"+gameProcId+" )";
-                this.mainTooltip.SetToolTip(this.hookGameButton, "PID in hex: 0x"+gameProcId.ToString("X")+"\n\nWe do not check if the game is still active after the initial hook");
+                hookGameButton.Text = "Game Hooked (Status: Connected to PID:" + gameProcId + " )";
+                this.mainTooltip.SetToolTip(this.hookGameButton, "PID in hex: 0x" + gameProcId.ToString("X") + "\n\nWe do not check if the game is still active after the initial hook");
                 //Timers
                 healthTimer.Enabled = true;
                 //Offsets
-                playerHP.offsets = new playerInfo.playerDataHealth(0x344);
+                playerHP.offsets = new playerInfo.PlayerAddyOffsets(0x0);
                 //Bases
-                playerHP.baseAddress = 0x01052DE8;
-                //Multilevel (mostly always 0)
-                playerHP.multilevel = new int[] { 0x344 };
+                playerHP.baseAddress = 0x01052DE8;   // <- THIS NEEDS TO BE REPLACED WITH REAL BASE ADDRESS
+                //Multilevel
+                playerHP.multilevel = new int[] { 0x344, 0x0 };
             }
             catch (Exception ex)
             {
@@ -84,7 +84,11 @@ namespace Dishonored_Trainer
             else
             {
                 playerBaseHealth = Mem.ReadMultiLevelPointer(playerHP.baseAddress, 4, playerHP.multilevel);
-                healthTextBox.Text = Convert.ToString(Mem.ReadInt(playerBaseHealth + playerHP.offsets.Health));
+                healthTextBox.Text = Convert.ToString(Mem.ReadInt(playerBaseHealth + playerHP.offsets.health));
+                textBox1.Text = (playerBaseHealth + playerHP.offsets.health).ToString("X");
+
+                this.Enabled = false;
+                healthTimer.Enabled = false;
             }
         }
 
