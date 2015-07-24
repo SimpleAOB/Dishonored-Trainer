@@ -18,14 +18,17 @@ namespace Dishonored_Trainer
         Process[] MyProcess;
         ProcessModule mainModule;
         ProcessMemoryReader Mem = new ProcessMemoryReader();
-        playerInfo.PlayerData playerHP = new playerInfo.PlayerData();
-        playerInfo.PlayerDataM playerM = new playerInfo.PlayerDataM();
+        playerInfo.PlayerDataHealthInfo playerHP = new playerInfo.PlayerDataHealthInfo();
+        playerInfo.PlayerDataARCInfo playerARC = new playerInfo.PlayerDataARCInfo();
+        //playerInfo.PlayerData playerM = new playerInfo.PlayerData();
 
         bool GameFound = false;
         int gameProcId;
         int playerBaseHealth;
+        int playerBaseARC;
 
         bool healthBoxReady;
+        bool crAmmoReady;
 
         public mainForm()
         {
@@ -62,12 +65,16 @@ namespace Dishonored_Trainer
                 this.mainTooltip.SetToolTip(this.hookGameButton, "PID in hex: 0x" + gameProcId.ToString("X") + "\n\nWe do not check if the game is still active after the initial hook");
                 //Timers
                 healthTimer.Enabled = true;
+                ammoCRTimer.Enabled = true;
                 //Offsets
                 playerHP.offsets = new playerInfo.PlayerAddyOffsets(0x0);
+                playerARC.offsets = new playerInfo.playerDataARC(0x0);
                 //Bases
-                playerHP.baseAddress = 0x01052DE8;   // <- THIS NEEDS TO BE REPLACED WITH REAL BASE ADDRESS
+                playerHP.baseAddress = 0x01452DE8;
+                playerARC.baseAddress = 0x0104CB9C;
                 //Multilevel
-                playerHP.multilevel = new int[] { 0x344, 0x0 };
+                playerHP.multilevel = new int[] { 0x344 };
+                playerARC.multilevel = new int[] { 0x84, 0x44, 0x54, 0xBC, 0x10 };
             }
             catch (Exception ex)
             {
@@ -79,16 +86,13 @@ namespace Dishonored_Trainer
         {
             if (healthCheck.Checked == true)
             {
-
+                playerBaseHealth = Mem.ReadMultiLevelPointer(playerHP.baseAddress, 4, playerHP.multilevel);
+                Mem.WriteInt(playerBaseHealth, Convert.ToInt32(healthTextBox.Text));
             }
             else
             {
                 playerBaseHealth = Mem.ReadMultiLevelPointer(playerHP.baseAddress, 4, playerHP.multilevel);
-                healthTextBox.Text = Convert.ToString(Mem.ReadInt(playerBaseHealth + playerHP.offsets.health));
-                textBox1.Text = (playerBaseHealth + playerHP.offsets.health).ToString("X");
-
-                this.Enabled = false;
-                healthTimer.Enabled = false;
+                healthTextBox.Text = Convert.ToString(Mem.ReadInt(playerBaseHealth));
             }
         }
 
@@ -119,13 +123,54 @@ namespace Dishonored_Trainer
 
         private void setHacksButton_Click(object sender, EventArgs e)
         {
-            setHealth();
+            setHealth(Convert.ToInt32(healthTextBox.Text));
         }
-        public void setHealth()
+        public void setHealth(int hp)
         {
             if (healthBoxReady)
             {
+                playerBaseHealth = Mem.ReadMultiLevelPointer(playerHP.baseAddress, 4, playerHP.multilevel);
+                Mem.WriteInt(playerBaseHealth, hp);
                 healthTimer.Enabled = true;
+            }
+        }
+
+        private void ammoCRTimer_Tick(object sender, EventArgs e)
+        {
+            if (healthCheck.Checked == true)
+            {
+   
+            }
+            else
+            {
+                playerBaseARC = Mem.ReadMultiLevelPointer(playerARC.baseAddress, 4, playerARC.multilevel);
+                Console.WriteLine(playerBaseARC.ToString("X"));
+                crAmmoBox.Text = Convert.ToString(Mem.ReadInt(playerBaseARC));
+            }
+        }
+
+        private void crAmmoBox_Enter(object sender, EventArgs e)
+        {
+            ammoCRTimer.Enabled = false;
+        }
+
+        private void crAmmoBox_Leave(object sender, EventArgs e)
+        {
+            if (healthTextBox.Text != "")
+            {
+                bool isInt = Regex.IsMatch(crAmmoBox.Text, @"^\d+$");
+                if (!isInt)
+                {
+                    MessageBox.Show("Please enter a number in the box");
+                }
+                else
+                {
+                    crAmmoReady = true;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please fill in a value in the Crossbow Ammo [Regular] textbox");
             }
         }
     }

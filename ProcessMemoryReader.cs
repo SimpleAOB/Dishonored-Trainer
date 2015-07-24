@@ -106,7 +106,6 @@ namespace ProcessMemoryReaderLib
             IntPtr lpOutStorage = IntPtr.Zero;
 
             int pointerAddy = MemoryAddress;
-            Console.WriteLine(pointerAddy.ToString("X"));
             //int pointerTemp = 0;
             for (int i = 0; i < (offsetList.Length); i++)
             {
@@ -128,10 +127,8 @@ namespace ProcessMemoryReaderLib
                     btBuffer,
                     (uint)btBuffer.Length,
                     out lpOutStorage);
-                Console.WriteLine(pointerAddy.ToString("X"));
             }
-            Console.WriteLine(pointerAddy.ToString("X"));
-            return pointerAddy; 
+            return pointerAddy;
         }
 
         public byte ReadByte(int MemoryAddress)

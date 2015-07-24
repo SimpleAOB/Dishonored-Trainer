@@ -32,11 +32,13 @@
             this.hookGameButton = new System.Windows.Forms.Button();
             this.mainTooltip = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.crAmmoCheck = new System.Windows.Forms.CheckBox();
+            this.crAmmoBox = new System.Windows.Forms.TextBox();
             this.healthCheck = new System.Windows.Forms.CheckBox();
             this.healthTextBox = new System.Windows.Forms.TextBox();
             this.setHacksButton = new System.Windows.Forms.Button();
             this.healthTimer = new System.Windows.Forms.Timer(this.components);
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.ammoCRTimer = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -52,7 +54,8 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.crAmmoCheck);
+            this.groupBox1.Controls.Add(this.crAmmoBox);
             this.groupBox1.Controls.Add(this.healthCheck);
             this.groupBox1.Controls.Add(this.healthTextBox);
             this.groupBox1.Controls.Add(this.setHacksButton);
@@ -62,6 +65,25 @@
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Available Hacks";
+            // 
+            // crAmmoCheck
+            // 
+            this.crAmmoCheck.AutoSize = true;
+            this.crAmmoCheck.Location = new System.Drawing.Point(162, 48);
+            this.crAmmoCheck.Name = "crAmmoCheck";
+            this.crAmmoCheck.Size = new System.Drawing.Size(90, 17);
+            this.crAmmoCheck.TabIndex = 4;
+            this.crAmmoCheck.Text = "Freeze Ammo";
+            this.crAmmoCheck.UseVisualStyleBackColor = true;
+            // 
+            // crAmmoBox
+            // 
+            this.crAmmoBox.Location = new System.Drawing.Point(6, 45);
+            this.crAmmoBox.Name = "crAmmoBox";
+            this.crAmmoBox.Size = new System.Drawing.Size(131, 20);
+            this.crAmmoBox.TabIndex = 3;
+            this.crAmmoBox.Enter += new System.EventHandler(this.crAmmoBox_Enter);
+            this.crAmmoBox.Leave += new System.EventHandler(this.crAmmoBox_Leave);
             // 
             // healthCheck
             // 
@@ -97,12 +119,10 @@
             this.healthTimer.Interval = 250;
             this.healthTimer.Tick += new System.EventHandler(this.healthTimer_Tick);
             // 
-            // textBox1
+            // ammoCRTimer
             // 
-            this.textBox1.Location = new System.Drawing.Point(40, 106);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 3;
+            this.ammoCRTimer.Interval = 250;
+            this.ammoCRTimer.Tick += new System.EventHandler(this.ammoCRTimer_Tick);
             // 
             // mainForm
             // 
@@ -133,7 +153,9 @@
         private System.Windows.Forms.Timer healthTimer;
         private System.Windows.Forms.CheckBox healthCheck;
         private System.Windows.Forms.TextBox healthTextBox;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox crAmmoBox;
+        private System.Windows.Forms.Timer ammoCRTimer;
+        private System.Windows.Forms.CheckBox crAmmoCheck;
     }
 }
 

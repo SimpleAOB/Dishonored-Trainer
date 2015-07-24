@@ -21,7 +21,7 @@ namespace Dishonored_Trainer
                 mana = _mana;
             }
         }
-        public struct PlayerData
+        public struct PlayerDataHealthInfo
         {
             public int baseAddress;
             public int[] multilevel;
@@ -40,11 +40,30 @@ namespace Dishonored_Trainer
                 Mana = _mana;
             }
         }
-        public struct PlayerDataM
+        public struct PlayerDataManaInfo
         {
             public int baseAddress;
             public int[] multilevel;
             public playerDataMana offsets;
+        }
+        #endregion
+        //----------------------------
+        #region Ammo Regular Crossbow Address / Offsets
+        public class playerDataARC
+        {
+            public int AmmoRC;
+
+
+            public playerDataARC(int _arc)
+            {
+                AmmoRC = _arc;
+            }
+        }
+        public struct PlayerDataARCInfo
+        {
+            public int baseAddress;
+            public int[] multilevel;
+            public playerDataARC offsets;
         }
         #endregion
     }
