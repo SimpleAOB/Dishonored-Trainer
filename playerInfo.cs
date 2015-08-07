@@ -48,23 +48,5 @@ namespace Dishonored_Trainer
         }
         #endregion
         //----------------------------
-        #region Ammo Regular Crossbow Address / Offsets
-        public class playerDataARC
-        {
-            public int AmmoRC;
-
-
-            public playerDataARC(int _arc)
-            {
-                AmmoRC = _arc;
-            }
-        }
-        public struct PlayerDataARCInfo
-        {
-            public int baseAddress;
-            public int[] multilevel;
-            public playerDataARC offsets;
-        }
-        #endregion
     }
 }

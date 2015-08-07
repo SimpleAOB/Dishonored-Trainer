@@ -32,13 +32,13 @@
             this.hookGameButton = new System.Windows.Forms.Button();
             this.mainTooltip = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.crAmmoCheck = new System.Windows.Forms.CheckBox();
-            this.crAmmoBox = new System.Windows.Forms.TextBox();
+            this.manaCheck = new System.Windows.Forms.CheckBox();
+            this.manaTextBox = new System.Windows.Forms.TextBox();
             this.healthCheck = new System.Windows.Forms.CheckBox();
             this.healthTextBox = new System.Windows.Forms.TextBox();
             this.setHacksButton = new System.Windows.Forms.Button();
             this.healthTimer = new System.Windows.Forms.Timer(this.components);
-            this.ammoCRTimer = new System.Windows.Forms.Timer(this.components);
+            this.manaTimer = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -54,8 +54,8 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.crAmmoCheck);
-            this.groupBox1.Controls.Add(this.crAmmoBox);
+            this.groupBox1.Controls.Add(this.manaCheck);
+            this.groupBox1.Controls.Add(this.manaTextBox);
             this.groupBox1.Controls.Add(this.healthCheck);
             this.groupBox1.Controls.Add(this.healthTextBox);
             this.groupBox1.Controls.Add(this.setHacksButton);
@@ -66,24 +66,24 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Available Hacks";
             // 
-            // crAmmoCheck
+            // manaCheck
             // 
-            this.crAmmoCheck.AutoSize = true;
-            this.crAmmoCheck.Location = new System.Drawing.Point(162, 48);
-            this.crAmmoCheck.Name = "crAmmoCheck";
-            this.crAmmoCheck.Size = new System.Drawing.Size(90, 17);
-            this.crAmmoCheck.TabIndex = 4;
-            this.crAmmoCheck.Text = "Freeze Ammo";
-            this.crAmmoCheck.UseVisualStyleBackColor = true;
+            this.manaCheck.AutoSize = true;
+            this.manaCheck.Location = new System.Drawing.Point(162, 47);
+            this.manaCheck.Name = "manaCheck";
+            this.manaCheck.Size = new System.Drawing.Size(88, 17);
+            this.manaCheck.TabIndex = 6;
+            this.manaCheck.Text = "Freeze Mana";
+            this.manaCheck.UseVisualStyleBackColor = true;
             // 
-            // crAmmoBox
+            // manaTextBox
             // 
-            this.crAmmoBox.Location = new System.Drawing.Point(6, 45);
-            this.crAmmoBox.Name = "crAmmoBox";
-            this.crAmmoBox.Size = new System.Drawing.Size(131, 20);
-            this.crAmmoBox.TabIndex = 3;
-            this.crAmmoBox.Enter += new System.EventHandler(this.crAmmoBox_Enter);
-            this.crAmmoBox.Leave += new System.EventHandler(this.crAmmoBox_Leave);
+            this.manaTextBox.Location = new System.Drawing.Point(6, 45);
+            this.manaTextBox.Name = "manaTextBox";
+            this.manaTextBox.Size = new System.Drawing.Size(131, 20);
+            this.manaTextBox.TabIndex = 5;
+            this.manaTextBox.Enter += new System.EventHandler(this.manaTextBox_Enter);
+            this.manaTextBox.Leave += new System.EventHandler(this.manaTextBox_Leave);
             // 
             // healthCheck
             // 
@@ -119,10 +119,10 @@
             this.healthTimer.Interval = 250;
             this.healthTimer.Tick += new System.EventHandler(this.healthTimer_Tick);
             // 
-            // ammoCRTimer
+            // manaTimer
             // 
-            this.ammoCRTimer.Interval = 250;
-            this.ammoCRTimer.Tick += new System.EventHandler(this.ammoCRTimer_Tick);
+            this.manaTimer.Interval = 250;
+            this.manaTimer.Tick += new System.EventHandler(this.manaTimer_Tick);
             // 
             // mainForm
             // 
@@ -137,6 +137,7 @@
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Dishonored Trainer: v1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.mainForm_FormClosing);
             this.Load += new System.EventHandler(this.mainForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -153,9 +154,9 @@
         private System.Windows.Forms.Timer healthTimer;
         private System.Windows.Forms.CheckBox healthCheck;
         private System.Windows.Forms.TextBox healthTextBox;
-        private System.Windows.Forms.TextBox crAmmoBox;
-        private System.Windows.Forms.Timer ammoCRTimer;
-        private System.Windows.Forms.CheckBox crAmmoCheck;
+        private System.Windows.Forms.Timer manaTimer;
+        private System.Windows.Forms.CheckBox manaCheck;
+        private System.Windows.Forms.TextBox manaTextBox;
     }
 }
 

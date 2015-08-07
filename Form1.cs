@@ -6,6 +6,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -19,16 +20,21 @@ namespace Dishonored_Trainer
         ProcessModule mainModule;
         ProcessMemoryReader Mem = new ProcessMemoryReader();
         playerInfo.PlayerDataHealthInfo playerHP = new playerInfo.PlayerDataHealthInfo();
-        playerInfo.PlayerDataARCInfo playerARC = new playerInfo.PlayerDataARCInfo();
+        playerInfo.PlayerDataManaInfo playerMana = new playerInfo.PlayerDataManaInfo();
         //playerInfo.PlayerData playerM = new playerInfo.PlayerData();
+
+        [DllImport("user32.dll")]
+        static extern bool SetWindowText(IntPtr hWnd, string text);
 
         bool GameFound = false;
         int gameProcId;
         int playerBaseHealth;
-        int playerBaseARC;
+        int playerBaseMana;
 
         bool healthBoxReady;
-        bool crAmmoReady;
+        bool manaBoxReady;
+
+        Process DishonoredTextProc;
 
         public mainForm()
         {
@@ -65,23 +71,26 @@ namespace Dishonored_Trainer
                 this.mainTooltip.SetToolTip(this.hookGameButton, "PID in hex: 0x" + gameProcId.ToString("X") + "\n\nWe do not check if the game is still active after the initial hook");
                 //Timers
                 healthTimer.Enabled = true;
-                ammoCRTimer.Enabled = true;
+                manaTimer.Enabled = true;
                 //Offsets
                 playerHP.offsets = new playerInfo.PlayerAddyOffsets(0x0);
-                playerARC.offsets = new playerInfo.playerDataARC(0x0);
+                playerMana.offsets = new playerInfo.playerDataMana(0x0);
                 //Bases
                 playerHP.baseAddress = 0x01452DE8;
-                playerARC.baseAddress = 0x0104CB9C;
+                playerMana.baseAddress = 0x01452DE8;
                 //Multilevel
                 playerHP.multilevel = new int[] { 0x344 };
-                playerARC.multilevel = new int[] { 0x84, 0x44, 0x54, 0xBC, 0x10 };
+                playerMana.multilevel = new int[] { 0xA60 };
+
+                DishonoredTextProc = Process.GetProcessById(gameProcId);
+                SetWindowText(DishonoredTextProc.MainWindowHandle, "Dishonored -- Hacks Active");
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Could not connect (the game is probably not running): \n\n" + ex.Message + ex.StackTrace);
             }
         }
-
+        #region Timer Ticks
         private void healthTimer_Tick(object sender, EventArgs e)
         {
             if (healthCheck.Checked == true)
@@ -95,6 +104,20 @@ namespace Dishonored_Trainer
                 healthTextBox.Text = Convert.ToString(Mem.ReadInt(playerBaseHealth));
             }
         }
+        private void manaTimer_Tick(object sender, EventArgs e)
+        {
+            if (manaCheck.Checked == true)
+            {
+                playerBaseMana = Mem.ReadMultiLevelPointer(playerMana.baseAddress, 4, playerMana.multilevel);
+                Mem.WriteInt(playerBaseMana, Convert.ToInt32(manaTextBox.Text));
+            }
+            else
+            {
+                playerBaseMana = Mem.ReadMultiLevelPointer(playerMana.baseAddress, 4, playerMana.multilevel);
+                manaTextBox.Text = Convert.ToString(Mem.ReadInt(playerBaseMana));
+            }
+        }
+        #endregion
 
         private void textBox1_Leave(object sender, EventArgs e)
         {
@@ -124,6 +147,7 @@ namespace Dishonored_Trainer
         private void setHacksButton_Click(object sender, EventArgs e)
         {
             setHealth(Convert.ToInt32(healthTextBox.Text));
+            setMana(Convert.ToInt32(manaTextBox.Text));
         }
         public void setHealth(int hp)
         {
@@ -134,43 +158,42 @@ namespace Dishonored_Trainer
                 healthTimer.Enabled = true;
             }
         }
-
-        private void ammoCRTimer_Tick(object sender, EventArgs e)
+        public void setMana(int mana)
         {
-            if (healthCheck.Checked == true)
+            if (manaBoxReady)
             {
-   
-            }
-            else
-            {
-                playerBaseARC = Mem.ReadMultiLevelPointer(playerARC.baseAddress, 4, playerARC.multilevel);
-                Console.WriteLine(playerBaseARC.ToString("X"));
-                crAmmoBox.Text = Convert.ToString(Mem.ReadInt(playerBaseARC));
+                playerBaseHealth = Mem.ReadMultiLevelPointer(playerMana.baseAddress, 4, playerMana.multilevel);
+                Mem.WriteInt(playerBaseMana, mana);
+                manaTimer.Enabled = true;
             }
         }
-
-        private void crAmmoBox_Enter(object sender, EventArgs e)
+        private void mainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            ammoCRTimer.Enabled = false;
+            SetWindowText(DishonoredTextProc.MainWindowHandle, "Dishonored -- Hacks Closed [Inactive]");
         }
 
-        private void crAmmoBox_Leave(object sender, EventArgs e)
+        private void manaTextBox_Enter(object sender, EventArgs e)
         {
-            if (healthTextBox.Text != "")
+            manaTimer.Enabled = false;
+        }
+
+        private void manaTextBox_Leave(object sender, EventArgs e)
+        {
+            if (manaTextBox.Text != "")
             {
-                bool isInt = Regex.IsMatch(crAmmoBox.Text, @"^\d+$");
+                bool isInt = Regex.IsMatch(manaTextBox.Text, @"^\d+$");
                 if (!isInt)
                 {
                     MessageBox.Show("Please enter a number in the box");
                 }
                 else
                 {
-                    crAmmoReady = true;
+                    manaBoxReady = true;
                 }
             }
             else
             {
-                MessageBox.Show("Please fill in a value in the Crossbow Ammo [Regular] textbox");
+                MessageBox.Show("Please fill in a value in the mana textbox");
             }
         }
     }
