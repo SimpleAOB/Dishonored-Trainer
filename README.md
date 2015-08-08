@@ -5,3 +5,4 @@ This hack works for the latest version on *Steam* as of August 7th, 2015. I do n
 Contains the following hacks:
 - Health
 - Mana
+- Breath
