@@ -12,13 +12,9 @@ namespace Dishonored_Trainer
         public class PlayerAddyOffsets
         {
             public int health;
-            public int mana;
-
-
-            public PlayerAddyOffsets(int _health, int _mana = 0)
+            public PlayerAddyOffsets(int _health)
             {
                 health = _health;
-                mana = _mana;
             }
         }
         public struct PlayerDataHealthInfo
@@ -33,8 +29,6 @@ namespace Dishonored_Trainer
         public class playerDataMana
         {
             public int Mana;
-
-
             public playerDataMana(int _mana)
             {
                 Mana = _mana;
@@ -45,6 +39,23 @@ namespace Dishonored_Trainer
             public int baseAddress;
             public int[] multilevel;
             public playerDataMana offsets;
+        }
+        #endregion
+        //----------------------------
+        #region Breath Address / Offsets
+        public class playerDataBreath
+        {
+            public int Breath;
+            public playerDataBreath(int _breath)
+            {
+                Breath = _breath;
+            }
+        }
+        public struct PlayerDataBreathInfo
+        {
+            public int baseAddress;
+            public int[] multilevel;
+            public playerDataBreath offsets;
         }
         #endregion
         //----------------------------
