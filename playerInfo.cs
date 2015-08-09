@@ -59,5 +59,21 @@ namespace Dishonored_Trainer
         }
         #endregion
         //----------------------------
+        #region Gold Address / Offsets
+        public class playerDataGold
+        {
+            public int Gold;
+            public playerDataGold(int _gold)
+            {
+                Gold = _gold;
+            }
+        }
+        public struct PlayerDataGoldInfo
+        {
+            public int baseAddress;
+            public int[] multilevel;
+            public playerDataGold offsets;
+        }
+        #endregion
     }
 }

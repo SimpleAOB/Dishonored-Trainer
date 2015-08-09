@@ -22,6 +22,7 @@ namespace Dishonored_Trainer
         playerInfo.PlayerDataHealthInfo playerHP = new playerInfo.PlayerDataHealthInfo();
         playerInfo.PlayerDataManaInfo playerMana = new playerInfo.PlayerDataManaInfo();
         playerInfo.PlayerDataBreathInfo playerBreath = new playerInfo.PlayerDataBreathInfo();
+        playerInfo.PlayerDataGoldInfo playerGold = new playerInfo.PlayerDataGoldInfo();
 
         [DllImport("user32.dll")]
         static extern bool SetWindowText(IntPtr hWnd, string text);
@@ -31,6 +32,7 @@ namespace Dishonored_Trainer
         int playerBaseHealth;
         int playerBaseMana;
         int playerBaseBreath;
+        int playerBaseGold;
 
         int origSize;
 
@@ -43,7 +45,18 @@ namespace Dishonored_Trainer
 
         private void mainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            SetWindowText(DishonoredTextProc.MainWindowHandle, "Dishonored -- Hacks Closed [Inactive]");
+            try
+            {
+                SetWindowText(DishonoredTextProc.MainWindowHandle, "Dishonored -- Hacks Closed [Inactive]");
+            }
+            catch (NullReferenceException)
+            {
+                Application.Exit();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Could not close for reason: \n\n" + ex.Message + "\n\nPlease resort to force closing this application");
+            }
         }
 
         private void mainForm_Load(object sender, EventArgs e)
@@ -83,17 +96,20 @@ namespace Dishonored_Trainer
                 playerHP.offsets = new playerInfo.PlayerAddyOffsets(0x0);
                 playerMana.offsets = new playerInfo.playerDataMana(0x0);
                 playerBreath.offsets = new playerInfo.playerDataBreath(0x0);
+                playerGold.offsets = new playerInfo.playerDataGold(0x0);
                 //Bases -- These are the same but separated for consistancy sake
                 playerHP.baseAddress = 0x01452DE8;
                 playerMana.baseAddress = 0x01452DE8;
                 playerBreath.baseAddress = 0x01452DE8;
+                playerGold.baseAddress = 0x0008E550;
                 //Multilevel
                 playerHP.multilevel = new int[] { 0x344 };
                 playerMana.multilevel = new int[] { 0xA60 };
                 playerBreath.multilevel = new int[] { 0xAB8 };
+                playerGold.multilevel = new int[] { 0x04 };
 
                 DishonoredTextProc = Process.GetProcessById(gameProcId);
-                SetWindowText(DishonoredTextProc.MainWindowHandle, "Dishonored -- Hacks Active");
+                SetWindowText(DishonoredTextProc.MainWindowHandle, "Dishonored -- Hacks by Simple_AOB");
                 
             }
             catch (Exception ex)
@@ -145,5 +161,11 @@ namespace Dishonored_Trainer
             Mem.WriteFloat(playerBaseBreath, breath);
         }
         #endregion
+
+        private void goldButton_Click(object sender, EventArgs e)
+        {
+            playerBaseGold = Mem.ReadMultiLevelPointer(playerGold.baseAddress, 4, playerGold.multilevel);
+            Mem.WriteInt(playerBaseGold, 99999);
+        }
     }
 }

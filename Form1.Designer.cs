@@ -38,6 +38,7 @@
             this.breathTimer = new System.Windows.Forms.Timer(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.goldButton = new System.Windows.Forms.Button();
             this.manaCheck = new System.Windows.Forms.CheckBox();
             this.healthCheck = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -94,6 +95,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.goldButton);
             this.tabPage1.Controls.Add(this.manaCheck);
             this.tabPage1.Controls.Add(this.healthCheck);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
@@ -104,10 +106,20 @@
             this.tabPage1.Text = "Main Hacks";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // goldButton
+            // 
+            this.goldButton.Location = new System.Drawing.Point(198, 102);
+            this.goldButton.Name = "goldButton";
+            this.goldButton.Size = new System.Drawing.Size(73, 23);
+            this.goldButton.TabIndex = 12;
+            this.goldButton.Text = "Max Money";
+            this.goldButton.UseVisualStyleBackColor = true;
+            this.goldButton.Click += new System.EventHandler(this.goldButton_Click);
+            // 
             // manaCheck
             // 
             this.manaCheck.AutoSize = true;
-            this.manaCheck.Location = new System.Drawing.Point(6, 46);
+            this.manaCheck.Location = new System.Drawing.Point(6, 29);
             this.manaCheck.Name = "manaCheck";
             this.manaCheck.Size = new System.Drawing.Size(99, 17);
             this.manaCheck.TabIndex = 11;
@@ -172,6 +184,7 @@
         private System.Windows.Forms.CheckBox healthCheck;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.CheckBox breathCheck;
+        private System.Windows.Forms.Button goldButton;
     }
 }
 
